@@ -38,6 +38,10 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ],[
+            'unique' => ':attribute бүртгэлтэй байна.',
+            'required' => ':attribute оруулна уу.',
+            'confirmed' => 'Нууц үг тохирсонгүй',
         ]);
 
         $user = User::create([
@@ -50,6 +54,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return response()->json(['status' => true]);
     }
 }

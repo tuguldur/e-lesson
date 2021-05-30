@@ -15,16 +15,24 @@
         "@inertiajs/inertia": "^0.8.4",
         "@inertiajs/inertia-react": "^0.5.12",
         "@inertiajs/progress": "^0.2.4",
+        "@pmmmwh/react-refresh-webpack-plugin": "^0.5.0-beta.0",
         "@tailwindcss/forms": "^0.3.2",
         "alpinejs": "^2.7.3",
         "autoprefixer": "^10.2.4",
         "axios": "^0.21",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
+        "node-sass": "^6.0.0",
         "postcss": "^8.2.13",
         "postcss-import": "^14.0.1",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
+        "react-refresh": "^0.10.0",
+        "sass-loader": "^11.1.1",
         "tailwindcss": "^2.1.2"
+    },
+    "dependencies": {
+        "antd": "^4.16.0",
+        "react-router-dom": "^5.2.0"
     }
 }

@@ -15,14 +15,12 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
+Route::get('{any}', function () {
+    return Inertia::render('main', [
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->where('any', '.*');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
