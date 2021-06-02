@@ -1,10 +1,20 @@
 import React, { useState, useContext } from "react";
-import { Card, Row, Col, Form, Input, PageHeader, Button, Divider } from "antd";
+import {
+    Card,
+    Row,
+    Col,
+    Form,
+    Input,
+    PageHeader,
+    Button,
+    Divider,
+    message,
+} from "antd";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import axios from "axios";
 import Errors from "@/components/errors";
 import { Global } from "@/context/global";
-const Signup = () => {
+const Forgot = () => {
     const history = useHistory();
     const [errors, setErrors] = useState(null);
     const [form] = Form.useForm();
@@ -18,7 +28,7 @@ const Signup = () => {
                         <Card>
                             <PageHeader
                                 onBack={() => history.push("/auth/login")}
-                                title="Бүртгэл үүсгэх"
+                                title="Нууц үг сэргээх"
                                 className="auth-header"
                             />
                             <Divider />
@@ -29,10 +39,12 @@ const Signup = () => {
                                 onFinish={(values) => {
                                     setErrors(null);
                                     axios
-                                        .post("/register", { ...values })
+                                        .post("/forgot-password", { ...values })
                                         .then((response) => {
                                             if (response.data.status) {
-                                                window.location.href = "/";
+                                                message.success(
+                                                    "Нууц үг сэргээх холбоос илгээлээ та email хаягаа шалгана уу."
+                                                );
                                             }
                                         })
                                         .catch((err) => {
@@ -45,18 +57,6 @@ const Signup = () => {
                                 }}
                                 requiredMark={false}
                             >
-                                <Form.Item
-                                    label="Нэр"
-                                    name="name"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Нэр оруулна уу!",
-                                        },
-                                    ]}
-                                >
-                                    <Input placeholder="Нэр" size="large" />
-                                </Form.Item>
                                 <Form.Item
                                     label="Email"
                                     name="email"
@@ -72,54 +72,6 @@ const Signup = () => {
                                         placeholder="Email"
                                         size="large"
                                         type="email"
-                                    />
-                                </Form.Item>
-                                <Form.Item
-                                    label="Утасны дугаар"
-                                    name="phone"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            min: 8,
-                                            max: 10,
-                                            message:
-                                                "Зөв утасны дугаар оруулна уу!",
-                                        },
-                                    ]}
-                                >
-                                    <Input
-                                        placeholder="Утасны дугаар"
-                                        size="large"
-                                    />
-                                </Form.Item>
-                                <Form.Item
-                                    label="Нууц үг"
-                                    name="password"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Нууц үг оруулна уу!",
-                                        },
-                                    ]}
-                                >
-                                    <Input.Password
-                                        placeholder="Нууц үг"
-                                        size="large"
-                                    />
-                                </Form.Item>
-                                <Form.Item
-                                    label="Нууц үг давтах"
-                                    name="password_confirmation"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Нууц үг оруулна уу!",
-                                        },
-                                    ]}
-                                >
-                                    <Input.Password
-                                        placeholder="Нууц үг давтах"
-                                        size="large"
                                     />
                                 </Form.Item>
 
@@ -142,7 +94,7 @@ const Signup = () => {
                                                 block
                                                 htmlType="submit"
                                             >
-                                                Бүртгүүлэх
+                                                Сэргээх
                                             </Button>
                                         </Col>
                                     </Row>
@@ -157,4 +109,4 @@ const Signup = () => {
         </div>
     );
 };
-export default Signup;
+export default Forgot;

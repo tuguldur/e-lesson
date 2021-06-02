@@ -10,11 +10,12 @@ import {
 } from "react-router-dom";
 import "../sass/style.scss";
 // pages
-import { Auth, Signup } from "./pages";
+import { Auth, Signup, Forgot, Reset, Settings } from "./pages";
 // context
 import { Global } from "./context/global";
 //components
 import { Header } from "./components";
+import Protected from "./components/protected";
 var dom = document.getElementById("app");
 const App = (props) => {
     return (
@@ -37,6 +38,16 @@ const App = (props) => {
                         />
                         <Route exact path="/auth/login" component={Auth} />
                         <Route exact path="/auth/signup" component={Signup} />
+                        <Route exact path="/auth/forgot" component={Forgot} />
+                        <Route
+                            path="/reset-password/([0-9a-z]{64}|[?0-9a-zA-Z=%.])"
+                            component={Reset}
+                        />
+                        <Protected
+                            exact
+                            path="/settings"
+                            component={Settings}
+                        />
                         <Redirect to="/" />
                     </Switch>
                 </Global.Provider>

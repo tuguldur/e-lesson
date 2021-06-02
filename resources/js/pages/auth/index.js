@@ -20,11 +20,12 @@ const Auth = () => {
                                 form={form}
                                 layout="vertical"
                                 onFinish={(values) => {
+                                    setErrors(null);
                                     axios
                                         .post("/login", { ...values })
                                         .then((response) => {
                                             if (response.data.status) {
-                                                history.push("/");
+                                                window.location.href = "/";
                                             }
                                         })
                                         .catch((err) => {
@@ -75,7 +76,7 @@ const Auth = () => {
                                 >
                                     <Row justify="space-between">
                                         <Checkbox>Сануулах</Checkbox>
-                                        <Link to="/auth/forgot/">
+                                        <Link to="/auth/forgot">
                                             Нууц үг сэргээх
                                         </Link>
                                     </Row>

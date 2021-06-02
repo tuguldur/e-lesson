@@ -1,11 +1,24 @@
 import React, { useState, useContext } from "react";
-import { Card, Row, Col, Form, Input, PageHeader, Button, Divider } from "antd";
+import {
+    Card,
+    Row,
+    Col,
+    Form,
+    Input,
+    PageHeader,
+    Button,
+    Divider,
+    message,
+} from "antd";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import axios from "axios";
 import Errors from "@/components/errors";
 import { Global } from "@/context/global";
-const Signup = () => {
+const Reset = (props) => {
+    const token = props.match.params[0];
+
     const history = useHistory();
+
     const [errors, setErrors] = useState(null);
     const [form] = Form.useForm();
     const { data } = useContext(Global);
@@ -18,7 +31,7 @@ const Signup = () => {
                         <Card>
                             <PageHeader
                                 onBack={() => history.push("/auth/login")}
-                                title="Бүртгэл үүсгэх"
+                                title="Нууц үг сэргээх"
                                 className="auth-header"
                             />
                             <Divider />
@@ -29,7 +42,10 @@ const Signup = () => {
                                 onFinish={(values) => {
                                     setErrors(null);
                                     axios
-                                        .post("/register", { ...values })
+                                        .post("/reset-password", {
+                                            ...values,
+                                            token,
+                                        })
                                         .then((response) => {
                                             if (response.data.status) {
                                                 window.location.href = "/";
@@ -46,83 +62,37 @@ const Signup = () => {
                                 requiredMark={false}
                             >
                                 <Form.Item
-                                    label="Нэр"
-                                    name="name"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Нэр оруулна уу!",
-                                        },
-                                    ]}
-                                >
-                                    <Input placeholder="Нэр" size="large" />
-                                </Form.Item>
-                                <Form.Item
                                     label="Email"
                                     name="email"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            type: "email",
-                                            message: "Email оруулна уу!",
-                                        },
-                                    ]}
+                                    initialValue={decodeURIComponent(
+                                        props.location.search.replace(
+                                            "?email=",
+                                            ""
+                                        )
+                                    )}
                                 >
                                     <Input
                                         placeholder="Email"
                                         size="large"
                                         type="email"
+                                        disabled
                                     />
                                 </Form.Item>
-                                <Form.Item
-                                    label="Утасны дугаар"
-                                    name="phone"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            min: 8,
-                                            max: 10,
-                                            message:
-                                                "Зөв утасны дугаар оруулна уу!",
-                                        },
-                                    ]}
-                                >
-                                    <Input
-                                        placeholder="Утасны дугаар"
-                                        size="large"
-                                    />
-                                </Form.Item>
-                                <Form.Item
-                                    label="Нууц үг"
-                                    name="password"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Нууц үг оруулна уу!",
-                                        },
-                                    ]}
-                                >
+                                <Form.Item label="Шинэ нууц үг" name="password">
                                     <Input.Password
-                                        placeholder="Нууц үг"
+                                        placeholder="Шинэ нууц үг"
                                         size="large"
                                     />
                                 </Form.Item>
                                 <Form.Item
-                                    label="Нууц үг давтах"
+                                    label="Шинэ нууц үг давтах"
                                     name="password_confirmation"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: "Нууц үг оруулна уу!",
-                                        },
-                                    ]}
                                 >
                                     <Input.Password
-                                        placeholder="Нууц үг давтах"
+                                        placeholder="Шинэ нууц үг давтах"
                                         size="large"
                                     />
                                 </Form.Item>
-
                                 <Form.Item
                                     style={{
                                         marginBottom: 0,
@@ -142,7 +112,7 @@ const Signup = () => {
                                                 block
                                                 htmlType="submit"
                                             >
-                                                Бүртгүүлэх
+                                                Сэргээх
                                             </Button>
                                         </Col>
                                     </Row>
@@ -157,4 +127,4 @@ const Signup = () => {
         </div>
     );
 };
-export default Signup;
+export default Reset;

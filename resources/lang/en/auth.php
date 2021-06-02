@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'failed' => 'Бүртгэл олдсонгүй.',
+    'failed' => 'Email эсвэл нууц үг буруу байна.',
     'password' => 'Нууц үг буруу байна.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'throttle' => 'Оролдлого хэтэрсэн байна :seconds секундын дараа дахин хандана уу.',
 
 ];
