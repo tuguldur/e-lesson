@@ -48,7 +48,8 @@ const Reset = (props) => {
                                         })
                                         .then((response) => {
                                             if (response.data.status) {
-                                                window.location.href = "/";
+                                                window.location.href =
+                                                    "/auth/login";
                                             }
                                         })
                                         .catch((err) => {

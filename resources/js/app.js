@@ -16,7 +16,10 @@ import { Global } from "./context/global";
 //components
 import { Header } from "./components";
 import Protected from "./components/protected";
+
+import "moment/locale/mn";
 var dom = document.getElementById("app");
+
 const App = (props) => {
     return (
         <div className="app">
