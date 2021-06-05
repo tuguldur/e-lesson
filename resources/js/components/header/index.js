@@ -45,9 +45,9 @@ const Header = () => {
                                                     Хэрэглэгчид
                                                 </Link>
                                             </Menu.Item>
-                                            <Menu.Item key="/admin/teacher">
-                                                <Link to="/admin/teacher">
-                                                    Багш
+                                            <Menu.Item key="/admin/report">
+                                                <Link to="/admin/report">
+                                                    Tайлан
                                                 </Link>
                                             </Menu.Item>
                                             <Menu.Item key="/admin/lesson">

@@ -1,5 +1,4 @@
 require("./bootstrap");
-import "antd/dist/antd.css";
 import React, { useMemo } from "react";
 import ReactDOM from "react-dom";
 import {
@@ -8,7 +7,7 @@ import {
     Route,
     Redirect,
 } from "react-router-dom";
-import "../sass/style.scss";
+
 // pages
 import { Auth, Signup, Forgot, Reset, Settings, Users } from "./pages";
 // context
@@ -19,7 +18,8 @@ import Protected from "./components/protected";
 
 import "moment/locale/mn";
 var dom = document.getElementById("app");
-
+import "antd/dist/antd.css";
+import "../sass/style.scss";
 const App = (props) => {
     return (
         <div className="app">

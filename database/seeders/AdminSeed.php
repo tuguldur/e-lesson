@@ -18,6 +18,7 @@ class AdminSeed extends Seeder
         User::insert([
             'name' => 'Admin',
             'email' => env('MAIL_USERNAME'),
+            'phone' => "11223311",
             'role' => 'admin',
             'created_at' => now(),
             'updated_at' => now(),

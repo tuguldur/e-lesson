@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 
 
 class Users extends Controller
@@ -18,7 +20,7 @@ class Users extends Controller
     public function index()
     {
         $id = Auth::id();
-        $data = User::whereNotIn('id', [$id])->get();
+        $data = User::whereNotIn('id', [$id])->latest("created_at")->get();
         return response()->json(['status' => true, 'data' => $data]);
     }
 
@@ -30,18 +32,28 @@ class Users extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'name' => 'required|string|max:32',
+            'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'required|string|max:10',
+            'role' => 'required|string',
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        ],[
+            'unique' => ':attribute бүртгэлтэй байна.',
+            'required' => ':attribute оруулна уу.',
+            'confirmed' => 'Нууц үг тохирсонгүй',
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'role' => $request->role,
+            'password' => Hash::make($request->password),
+        ]);
+
+
+        return response()->json(['status' => true]);
     }
 
     /**

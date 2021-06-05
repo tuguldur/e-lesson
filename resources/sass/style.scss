@@ -12,6 +12,7 @@
         padding: 0 28px;
         h1 {
             margin-bottom: 0;
+            font-size: 16px;
             .logo {
                 line-height: 64px;
             }
@@ -74,4 +75,9 @@
     height: 100px;
     align-items: center;
     justify-content: center;
+}
+.errors {
+    color: red;
+    list-style: none;
+    padding: 0;
 }

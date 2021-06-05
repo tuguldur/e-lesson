@@ -35,9 +35,9 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:32',
             'email' => 'required|string|email|max:255|unique:users',
-            'phone' => 'required|string',
+            'phone' => 'required|string|max:10',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ],[
             'unique' => ':attribute бүртгэлтэй байна.',

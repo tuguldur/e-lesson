@@ -20,11 +20,15 @@ import moment from "moment";
 import Errors from "@/components/errors";
 
 const { Option } = Select;
+const { Search } = Input;
 const Users = () => {
     const [state, setState] = useState(null);
     const [edit, setEdit] = useState(null);
     const [errors, setErrors] = useState(null);
+    const [search, setSearch] = useState(null);
+    const [add_modal, setAddModal] = useState(null);
     const [form] = Form.useForm();
+    const [add] = Form.useForm();
     const get = () => {
         setState(null);
         axios
@@ -113,6 +117,63 @@ const Users = () => {
                             title={`Нийт хэрэглэгч (${
                                 state ? state.length : 0
                             })`}
+                            extra={
+                                <Space>
+                                    <Search
+                                        placeholder="Өгөгдөл хайх"
+                                        onSearch={(data) => {
+                                            if (data) {
+                                                setSearch(
+                                                    state.filter(
+                                                        (user) =>
+                                                            user.name
+                                                                .toLowerCase()
+                                                                .includes(
+                                                                    data.toLowerCase()
+                                                                ) ||
+                                                            user.email
+                                                                .toLowerCase()
+                                                                .includes(
+                                                                    data.toLowerCase()
+                                                                ) ||
+                                                            user.phone
+                                                                ?.toLowerCase()
+                                                                .includes(
+                                                                    data.toLowerCase()
+                                                                )
+                                                    )
+                                                );
+                                            } else {
+                                                setSearch(state);
+                                            }
+                                        }}
+                                    />
+                                    <Select
+                                        defaultValue="all"
+                                        onChange={(type) => {
+                                            if (type === "all") {
+                                                setSearch(state);
+                                            } else {
+                                                setSearch(
+                                                    state.filter((user) =>
+                                                        user.role.includes(type)
+                                                    )
+                                                );
+                                            }
+                                        }}
+                                    >
+                                        <Option value="all">Бүгд</Option>
+                                        <Option value="student">Сурагч</Option>
+                                        <Option value="teacher">Багш</Option>
+                                    </Select>
+                                    <Button
+                                        type="primary"
+                                        onClick={() => setAddModal(true)}
+                                    >
+                                        Хэрэглэгч нэмэх
+                                    </Button>
+                                </Space>
+                            }
                         >
                             {!state ? (
                                 <div className="loading">
@@ -120,7 +181,7 @@ const Users = () => {
                                 </div>
                             ) : (
                                 <Table
-                                    dataSource={state}
+                                    dataSource={search ? search : state}
                                     columns={columns}
                                     rowKey={(record) => record.id}
                                 />
@@ -165,7 +226,6 @@ const Users = () => {
                         rules={[
                             {
                                 required: true,
-
                                 message: "нэр оруулна уу!",
                             },
                         ]}
@@ -198,6 +258,114 @@ const Users = () => {
                             <Option value="student">Сурагч</Option>
                             <Option value="teacher">Багш</Option>
                         </Select>
+                    </Form.Item>
+                </Form>
+            </Modal>
+            {/* хэрэглэгч нэмэх */}
+            <Modal
+                visible={add_modal}
+                title="Хэрэглэгч нэмэх"
+                onCancel={() => setAddModal(false)}
+                onOk={() => add.submit()}
+            >
+                {errors && <Errors errors={errors} />}
+                <Form
+                    layout="vertical"
+                    form={add}
+                    onFinish={(values) => {
+                        setErrors(null);
+                        axios
+                            .post("/admin/users/add", { ...values })
+                            .then((response) => {
+                                if (response.data.status) {
+                                    message.success("Амжилттай");
+                                    setAddModal(null);
+                                    add.resetFields();
+                                    get();
+                                }
+                            })
+                            .catch((err) => {
+                                if (err.response.data.errors) {
+                                    setErrors(err.response.data.errors);
+                                }
+                            });
+                    }}
+                >
+                    <Form.Item
+                        label="Нэр"
+                        name="name"
+                        rules={[
+                            {
+                                required: true,
+                                message: "нэр оруулна уу!",
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Утасны дугаар"
+                        name="phone"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Утасны дугаар оруулна уу!",
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        label="Email"
+                        name="email"
+                        rules={[
+                            {
+                                required: true,
+                                type: "email",
+                                message: "Email оруулна уу!",
+                            },
+                        ]}
+                    >
+                        <Input type="email" />
+                    </Form.Item>
+                    <Form.Item
+                        label="Эрх"
+                        name="role"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Эрх сонгоно уу!",
+                            },
+                        ]}
+                    >
+                        <Select>
+                            <Option value="student">Сурагч</Option>
+                            <Option value="teacher">Багш</Option>
+                        </Select>
+                    </Form.Item>
+                    <Form.Item
+                        label="Нууц үг"
+                        name="password"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Нууц үг оруулна уу!",
+                            },
+                        ]}
+                    >
+                        <Input.Password />
+                    </Form.Item>
+                    <Form.Item
+                        label="Нууц үг давтах"
+                        name="password_confirmation"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Нууц үг оруулна уу!",
+                            },
+                        ]}
+                    >
+                        <Input.Password />
                     </Form.Item>
                 </Form>
             </Modal>

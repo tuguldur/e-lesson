@@ -23,6 +23,7 @@ Route::middleware(['auth'])->group(function () {
     // admin actions 
     Route::middleware(['role:admin'])->group(function () {
         Route::get("/admin/users",[Users::class, 'index']);
+        Route::post("/admin/users/add",[Users::class, 'store']);
         Route::delete("/admin/users/{id}",[Users::class, 'destroy']);
         Route::post("/admin/users/{id}",[Users::class, 'update']);
     });
