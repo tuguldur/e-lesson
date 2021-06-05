@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 use App\Http\Controllers\User\Account;
+use App\Http\Controllers\Staff\Users;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,6 +16,17 @@ use App\Http\Controllers\User\Account;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::middleware(['auth'])->group(function () {
+    // user actions
+    Route::post('/account/information', [Account::class, 'information']);
+    Route::post('/account/password', [Account::class, 'password']);
+    // admin actions 
+    Route::middleware(['role:admin'])->group(function () {
+        Route::get("/admin/users",[Users::class, 'index']);
+        Route::delete("/admin/users/{id}",[Users::class, 'destroy']);
+        Route::post("/admin/users/{id}",[Users::class, 'update']);
+    });
+});
 
 Route::get('{any}', function () {
     return Inertia::render('main', [
@@ -23,15 +35,6 @@ Route::get('{any}', function () {
     ]);
 })->where('any', '.*');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware(['auth'])->group(function () {
-    // user actions
-    Route::post('/account/information', [Account::class, 'information']);
-    Route::post('/account/password', [Account::class, 'password']);
-});
 
 
 require __DIR__.'/auth.php';

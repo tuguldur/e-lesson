@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Hash;
 
 class Account extends Controller
 {
+    public function index(Request $request)
+    {
+        return response()->json(['status' => true]);
+    }
     public function information(Request $request)
     {
         $request->validate([

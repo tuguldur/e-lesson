@@ -38,6 +38,25 @@ const Header = () => {
                                     mode="horizontal"
                                     activeKey={location.pathname}
                                 >
+                                    {data.props.auth.user.role == "admin" ? (
+                                        <>
+                                            <Menu.Item key="/admin/user">
+                                                <Link to="/admin/user">
+                                                    Хэрэглэгчид
+                                                </Link>
+                                            </Menu.Item>
+                                            <Menu.Item key="/admin/teacher">
+                                                <Link to="/admin/teacher">
+                                                    Багш
+                                                </Link>
+                                            </Menu.Item>
+                                            <Menu.Item key="/admin/lesson">
+                                                <Link to="/admin/lesson">
+                                                    Хичээлүүд
+                                                </Link>
+                                            </Menu.Item>
+                                        </>
+                                    ) : null}
                                     <Menu.Item key="/settings">
                                         <Link to="/settings">
                                             {data.props.auth.user.name}
