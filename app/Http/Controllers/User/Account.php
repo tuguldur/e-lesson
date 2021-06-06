@@ -66,13 +66,11 @@ class Account extends Controller
     public function teacher(Request $request)
     {
         $request->validate([
-            'avatar' => 'required|string',
-            'phone' => 'required|string|max:10',
+            'description' => 'required|string|max:80',
         ]);
             $id = Auth::id();
         $user = User::find($id);
-        $user->name = $request->name;
-        $user->phone = $request->phone;
+        $user->description = $request->description;
         $user->save();
         return response()->json(['status' => true]);
     }

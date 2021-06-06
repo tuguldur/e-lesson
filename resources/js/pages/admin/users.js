@@ -14,6 +14,7 @@ import {
     Form,
     Input,
     Select,
+    Avatar,
 } from "antd";
 import axios from "axios";
 import moment from "moment";
@@ -54,6 +55,11 @@ const Users = () => {
         form.setFieldsValue(edit);
     }, [form, edit]);
     const columns = [
+        {
+            title: "",
+            dataIndex: "avatar",
+            render: (text) => <Avatar src={"/" + text} />,
+        },
         {
             title: "Имэйл",
             dataIndex: "email",

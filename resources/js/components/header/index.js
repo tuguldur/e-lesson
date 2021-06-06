@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Row, Col, Menu, Button, Popconfirm } from "antd";
+import { Row, Col, Menu, Button, Popconfirm, Avatar, Space } from "antd";
 import { PoweroffOutlined } from "@ant-design/icons";
 import { Link, useLocation } from "react-router-dom";
 import { Global } from "@/context/global";
@@ -66,9 +66,21 @@ const Header = () => {
                                         </>
                                     )}
                                     <Menu.Item key="/settings">
-                                        <Link to="/settings">
-                                            {data.props.auth.user.name}
-                                        </Link>
+                                        <Space>
+                                            {data.props.auth.user?.avatar ? (
+                                                <Avatar
+                                                    src={
+                                                        "/" +
+                                                        data.props.auth.user
+                                                            .avatar
+                                                    }
+                                                />
+                                            ) : null}
+
+                                            <Link to="/settings">
+                                                {data.props.auth.user.name}
+                                            </Link>
+                                        </Space>
                                     </Menu.Item>
                                 </Menu>
                                 <div className="user-action">

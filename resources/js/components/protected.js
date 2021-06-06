@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 import { Global } from "@/context/global";
 const Protected = ({ component: Component, ...rest }) => {
     const { data } = useContext(Global);
-    const loggedIn = Boolean(data);
+    const loggedIn = Boolean(data.props.auth.user);
     return (
         <Route
             {...rest}

@@ -6,6 +6,7 @@ use Inertia\Inertia;
 
 use App\Http\Controllers\User\Account;
 use App\Http\Controllers\Staff\Users;
+use App\Http\Controllers\Staff\LessonController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,6 +29,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post("/admin/users/add",[Users::class, 'store']);
         Route::delete("/admin/users/{id}",[Users::class, 'destroy']);
         Route::post("/admin/users/{id}",[Users::class, 'update']);
+    });
+    Route::middleware(['role:admin,teacher'])->group(function () {
+        Route::get("/teacher/lessons",[LessonController::class, 'index']);
+        Route::post("/teacher/lessons/{id}",[LessonController::class, 'update']);
+        Route::post("/teacher/lessons/add",[LessonController::class, 'create']);
+        Route::delete("/teacher/lessons/{id}",[LessonController::class, 'destroy']);
     });
 });
 

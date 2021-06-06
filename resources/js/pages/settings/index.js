@@ -25,6 +25,7 @@ const Settings = () => {
     const setFileValue = (info, field) => {
         if (info.file.status === "done") {
             message.success(`Зураг солигдлоо.`);
+            window.location.reload();
         } else if (info.file.status === "error") {
             message.error(`Хүсэлт амжилтгүй.`);
         }
@@ -35,13 +36,16 @@ const Settings = () => {
                 {errors && <Errors errors={errors} />}
                 <Form
                     layout="vertical"
+                    initialValues={{
+                        description: data.props.auth.user.description,
+                    }}
                     onFinish={(values) => {
                         setErrors(null);
                         axios
                             .post("/account/teacher", { ...values })
                             .then((response) => {
                                 if (response.data.status) {
-                                    message.success("Амжилттай");
+                                    window.location.reload();
                                 }
                             })
                             .catch((err) => {
@@ -82,7 +86,10 @@ const Settings = () => {
                 {errors && <Errors errors={errors} />}
                 <div className="settings-avatar">
                     <Space>
-                        <img src={"storage/" + data.props.auth.user.avatar} />
+                        <Avatar
+                            size={64}
+                            src={"/" + data.props.auth.user.avatar}
+                        />
                         <ImgCrop aspect={3 / 4}>
                             <Upload
                                 action="/account/avatar"
@@ -103,7 +110,7 @@ const Settings = () => {
                         </ImgCrop>
                     </Space>
                 </div>
-
+                <Divider />
                 <Form
                     initialValues={data.props.auth.user}
                     layout="vertical"
@@ -114,7 +121,7 @@ const Settings = () => {
                             .post("/account/information", { ...values })
                             .then((response) => {
                                 if (response.data.status) {
-                                    message.success("Амжилттай");
+                                    window.location.reload();
                                 }
                             })
                             .catch((err) => {
@@ -177,7 +184,7 @@ const Settings = () => {
                                 .post("/account/password", { ...values })
                                 .then((response) => {
                                     if (response.data.status) {
-                                        message.success("Амжилттай");
+                                        window.location.reload();
                                     } else {
                                         message.error(response.data.msg);
                                     }
