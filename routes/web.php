@@ -32,8 +32,8 @@ Route::middleware(['auth'])->group(function () {
     });
     Route::middleware(['role:admin,teacher'])->group(function () {
         Route::get("/teacher/lessons",[LessonController::class, 'index']);
-        Route::post("/teacher/lessons/{id}",[LessonController::class, 'update']);
         Route::post("/teacher/lessons/add",[LessonController::class, 'create']);
+        Route::post("/teacher/lessons/{id}",[LessonController::class, 'update']);
         Route::delete("/teacher/lessons/{id}",[LessonController::class, 'destroy']);
     });
 });

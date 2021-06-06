@@ -7,4 +7,5 @@ import Settings from "./settings";
 import Users from "./admin/users";
 
 import Lesson from "./teacher/lesson";
-export { Auth, Signup, Forgot, Reset, Settings, Users, Lesson };
+import Episode from "./teacher/episode";
+export { Auth, Signup, Forgot, Reset, Settings, Users, Lesson, Episode };

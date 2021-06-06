@@ -82,7 +82,7 @@ const Lesson = () => {
                             Устгах
                         </Button>
                     </Popconfirm>
-                    <Link to={"/teacher/lesson/" + record.id}>Үзэх </Link>
+                    <Link to={"/teacher/lesson/" + record.id}>Дэлгэрэнгүй</Link>
                 </Space>
             ),
         },
