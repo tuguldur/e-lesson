@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 
 // pages
-import { Auth, Signup, Forgot, Reset, Settings, Users } from "./pages";
+import { Auth, Signup, Forgot, Reset, Settings, Users, Lesson } from "./pages";
 // context
 import { Global } from "./context/global";
 //components
@@ -52,6 +52,11 @@ const App = (props) => {
                             component={Settings}
                         />
                         <Protected exact path="/admin/user" component={Users} />
+                        <Protected
+                            exact
+                            path="/teacher/lesson"
+                            component={Lesson}
+                        />
                         <Redirect to="/" />
                     </Switch>
                 </Global.Provider>

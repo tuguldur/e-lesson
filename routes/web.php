@@ -20,6 +20,8 @@ Route::middleware(['auth'])->group(function () {
     // user actions
     Route::post('/account/information', [Account::class, 'information']);
     Route::post('/account/password', [Account::class, 'password']);
+    Route::post('/account/avatar', [Account::class, 'avatar']);
+    Route::post("/account/teacher", [Account::class, 'teacher'])->middleware(['role:teacher']);
     // admin actions 
     Route::middleware(['role:admin'])->group(function () {
         Route::get("/admin/users",[Users::class, 'index']);
@@ -29,13 +31,12 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
-Route::get('{any}', function () {
+Route::get('{all?}', function () {
     return Inertia::render('main', [
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-})->where('any', '.*');
-
+})->where('all', '([A-z\d\-\/_]+)?');
 
 
 require __DIR__.'/auth.php';

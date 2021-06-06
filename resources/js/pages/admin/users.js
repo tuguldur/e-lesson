@@ -31,6 +31,7 @@ const Users = () => {
     const [add] = Form.useForm();
     const get = () => {
         setState(null);
+        setSearch(null);
         axios
             .get("/admin/users")
             .then((response) => {
@@ -166,12 +167,14 @@ const Users = () => {
                                         <Option value="student">Сурагч</Option>
                                         <Option value="teacher">Багш</Option>
                                     </Select>
-                                    <Button
-                                        type="primary"
-                                        onClick={() => setAddModal(true)}
-                                    >
-                                        Хэрэглэгч нэмэх
-                                    </Button>
+                                    {state && (
+                                        <Button
+                                            type="primary"
+                                            onClick={() => setAddModal(true)}
+                                        >
+                                            Хэрэглэгч нэмэх
+                                        </Button>
+                                    )}
                                 </Space>
                             }
                         >

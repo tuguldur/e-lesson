@@ -56,7 +56,15 @@ const Header = () => {
                                                 </Link>
                                             </Menu.Item>
                                         </>
-                                    ) : null}
+                                    ) : (
+                                        <>
+                                            <Menu.Item key="/teacher/lesson">
+                                                <Link to="/teacher/lesson">
+                                                    Хичээлүүд
+                                                </Link>
+                                            </Menu.Item>
+                                        </>
+                                    )}
                                     <Menu.Item key="/settings">
                                         <Link to="/settings">
                                             {data.props.auth.user.name}

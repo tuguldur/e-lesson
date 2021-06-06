@@ -5,4 +5,6 @@ import Reset from "./auth/reset";
 import Settings from "./settings";
 
 import Users from "./admin/users";
-export { Auth, Signup, Forgot, Reset, Settings, Users };
+
+import Lesson from "./teacher/lesson";
+export { Auth, Signup, Forgot, Reset, Settings, Users, Lesson };

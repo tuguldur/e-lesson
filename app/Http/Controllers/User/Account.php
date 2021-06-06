@@ -49,7 +49,33 @@ class Account extends Controller
        else return response()->json(['status' => false, 'msg' => 'Нууц үг тохирсонгүй']);
       
     }
-   
+    
+    public function avatar(Request $request)
+    {
+        $this->validate($request,[
+            'avatar' => 'required|image|mimes:jpeg,png,jpg|max:2048'
+        ]);
+
+        $path = $request->file('avatar')->store('avatars');
+        $id = Auth::id();
+        $user = User::find($id);
+        $user->avatar = $path;
+        $user->save();
+        return response()->json(['status' => true]);
+    }
+    public function teacher(Request $request)
+    {
+        $request->validate([
+            'avatar' => 'required|string',
+            'phone' => 'required|string|max:10',
+        ]);
+            $id = Auth::id();
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+        $user->save();
+        return response()->json(['status' => true]);
+    }
     public function destroy($id)
     {
         //
