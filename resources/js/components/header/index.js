@@ -51,7 +51,7 @@ const Header = () => {
                                                 </Link>
                                             </Menu.Item>
                                             <Menu.Item key="/admin/lesson">
-                                                <Link to="/admin/lesson">
+                                                <Link to="/teacher/lesson">
                                                     Хичээлүүд
                                                 </Link>
                                             </Menu.Item>

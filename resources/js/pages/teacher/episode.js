@@ -15,6 +15,9 @@ import {
     Upload,
     Popconfirm,
     Empty,
+    List,
+    Avatar,
+    Select,
 } from "antd";
 import { InboxOutlined, EditOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
@@ -25,13 +28,17 @@ import Errors from "@/components/errors";
 const Episode = (props) => {
     const { Dragger } = Upload;
     const { Meta } = Card;
+    const { Option } = Select;
+
     const [state, setState] = useState(null);
     const [episode, setEpisode] = useState(null);
+    const [student, setStudent] = useState(null);
     const [errors, setErrors] = useState(null);
     const [edit_episode, setEditEpisode] = useState(null);
     const [modalEpisode, setModalEpisode] = useState(false);
     const [modalStudent, setModalStudent] = useState(false);
     const [episode_form] = Form.useForm();
+    const [users, setUsers] = useState(null);
     // episode
     const setFileValue = (info, field) => {
         if (info.file.status === "done") {
@@ -49,6 +56,17 @@ const Episode = (props) => {
         }
         episode_form.setFieldsValue(edit_episode);
     }, [episode_form, edit_episode]);
+    const get_student = () => {
+        setStudent(null);
+        axios
+            .get(`/teacher/enroll/${props.match.params.id}`)
+            .then((response) => {
+                if (response.data.status) {
+                    setStudent(response.data.data);
+                }
+            })
+            .catch(() => message.error("Алдаа гарлаа"));
+    };
     const get = () => {
         axios
             .get("/teacher/lessons/" + props.match.params.id)
@@ -92,7 +110,31 @@ const Episode = (props) => {
                                     subTitle={state.description}
                                     className="page-header"
                                     extra={[
-                                        <Button key="student">
+                                        <Button
+                                            key="student"
+                                            onClick={() => {
+                                                setModalStudent(true);
+                                                if (!student) {
+                                                    get_student();
+                                                }
+                                                if (!users) {
+                                                    axios
+                                                        .get("/teacher/users")
+                                                        .then((response) => {
+                                                            if (
+                                                                response.data
+                                                                    .status
+                                                            ) {
+                                                                setUsers(
+                                                                    response
+                                                                        .data
+                                                                        .data
+                                                                );
+                                                            }
+                                                        });
+                                                }
+                                            }}
+                                        >
                                             Сурагч нэмэх
                                         </Button>,
                                         <Button
@@ -310,6 +352,116 @@ const Episode = (props) => {
                             </Button>
                         </Popconfirm>
                     </div>
+                )}
+            </Modal>
+            <Modal
+                visible={modalStudent}
+                title="Энэ хичээлийн сурагчид"
+                footer={null}
+                onCancel={() => setModalStudent(false)}
+                className="modal-student"
+            >
+                <Form
+                    onFinish={(values) => {
+                        axios
+                            .post(
+                                `/teacher/lessons/${props.match.params.id}/enroll/${values.id}`,
+                                { values }
+                            )
+                            .then((response) => {
+                                if (response.data.status) {
+                                    message.success("🔥");
+                                    get_student();
+                                } else message.warning("Нэмэгдсэн сурагч");
+                            });
+                    }}
+                >
+                    <Row gutter={16}>
+                        <Col span={18}>
+                            <Form.Item
+                                name="id"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Сурагчын email сонгоно уу.",
+                                    },
+                                ]}
+                            >
+                                <Select
+                                    showSearch
+                                    placeholder="Сурагчын email сонгоно уу."
+                                    optionFilterProp="children"
+                                    loading={users ? false : true}
+                                    filterOption={(input, option) =>
+                                        option.children
+                                            .toLowerCase()
+                                            .indexOf(input.toLowerCase()) >= 0
+                                    }
+                                >
+                                    {users?.map((user) => (
+                                        <Option value={user.id} key={user.id}>
+                                            {user.email}
+                                        </Option>
+                                    ))}
+                                </Select>
+                            </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                            <Form.Item>
+                                <Button type="primary" htmlType="submit" block>
+                                    Нэмэх
+                                </Button>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Form>
+                <Divider />
+                {student ? (
+                    <List
+                        itemLayout="horizontal"
+                        dataSource={student}
+                        renderItem={(item) => (
+                            <List.Item
+                                actions={[
+                                    <Popconfirm
+                                        title={`${item.student.name} хичээлээс хасах уу?`}
+                                        onConfirm={() => {
+                                            axios
+                                                .delete(
+                                                    "/teacher/enroll/" + item.id
+                                                )
+                                                .then((response) => {
+                                                    if (response.data.status) {
+                                                        message.success("🔥🔥");
+                                                        get_student();
+                                                    }
+                                                });
+                                        }}
+                                    >
+                                        <a>Хасах</a>
+                                    </Popconfirm>,
+                                ]}
+                            >
+                                <List.Item.Meta
+                                    avatar={
+                                        <Avatar
+                                            src={"/" + item.student.avatar}
+                                        />
+                                    }
+                                    title={
+                                        <a
+                                            href={`mailto:${item.student.email}`}
+                                        >
+                                            {item.student.email}
+                                        </a>
+                                    }
+                                    description={item.student.name}
+                                />
+                            </List.Item>
+                        )}
+                    />
+                ) : (
+                    <Empty />
                 )}
             </Modal>
         </>

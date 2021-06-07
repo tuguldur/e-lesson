@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Staff;
 use App\Http\Controllers\Controller;
 
 use App\Models\Lesson;
+use App\Models\Enroll;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,7 +29,16 @@ class LessonController extends Controller
         }
       
     }
-
+    public function list()
+    {
+            $lessons = Lesson::latest("created_at")->get();
+            $data = array();
+            foreach ($lessons as $lesson) {
+                $lesson->owner;
+                $data[] = $lesson;
+            }
+            return response()->json(['status' => true, 'data' => $data]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -53,11 +64,21 @@ class LessonController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+
+      
+    public function student($id)
     {
-        //
+        $data = Enroll::where("lesson_id", $id)->get();
+
+        return response()->json(['status' => true, "data" => $data ]);
     }
 
+    public function users(Request $request)
+    {
+        $id = Auth::id();
+        $data = User::whereNotIn('id', [$id])->latest("created_at")->get();
+        return response()->json(['status' => true, 'data' => $data]);
+    }
     /**
      * Display the specified resource.
      *
@@ -66,12 +87,23 @@ class LessonController extends Controller
      */
     public function show($id)
     {
-        $lesson = Lesson::where("id",$id)->where("created_by", Auth::id())->first();
-        if($lesson){
-            $lesson->owner;
-            return response()->json(['status' => true, "data" => $lesson ]);
+        if(Auth::user()->role == 'admin'){
+            $lesson = Lesson::where("id",$id)->first();
+            if($lesson){
+                $lesson->owner;
+                return response()->json(['status' => true, "data" => $lesson ]);
+            }
+            else return response()->json(['status' => false ], 404);
         }
-        else return response()->json(['status' => false ], 404);
+        else{
+            $lesson = Lesson::where("id",$id)->where("created_by", Auth::id())->first();
+            if($lesson){
+                $lesson->owner;
+                return response()->json(['status' => true, "data" => $lesson ]);
+            }
+            else return response()->json(['status' => false ], 404);
+        }
+      
 
     }
 

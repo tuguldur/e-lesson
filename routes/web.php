@@ -8,6 +8,7 @@ use App\Http\Controllers\User\Account;
 use App\Http\Controllers\Staff\Users;
 use App\Http\Controllers\Staff\LessonController;
 use App\Http\Controllers\Staff\EpisodeController;
+use App\Http\Controllers\Staff\EnrollController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,11 +32,16 @@ Route::middleware(['auth'])->group(function () {
         Route::delete("/admin/users/{id}",[Users::class, 'destroy']);
         Route::post("/admin/users/{id}",[Users::class, 'update']);
     });
+    Route::get("/lessons",[LessonController::class, 'list']);
+    
     Route::middleware(['role:admin,teacher'])->group(function () {
+        Route::get("/teacher/users",[LessonController::class, 'users']);
         Route::get("/teacher/lessons",[LessonController::class, 'index']);
         Route::post("/teacher/lessons/add",[LessonController::class, 'create']);
         Route::get("/teacher/lessons/{id}",[LessonController::class, 'show']);
         Route::post("/teacher/lessons/{id}",[LessonController::class, 'update']);
+
+        Route::get("/teacher/lessons/{id}/student",[LessonController::class, 'student']);
         Route::delete("/teacher/lessons/{id}",[LessonController::class, 'destroy']);
         // lesson episodes
         Route::post('/teacher/episode/video', [EpisodeController::class, 'store']);
@@ -43,6 +49,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/teacher/episode/{id}', [EpisodeController::class, 'update']);
         Route::get('/teacher/episode/{id}', [EpisodeController::class, 'index']);
         Route::delete("/teacher/episode/{id}",  [EpisodeController::class, 'destroy']);
+        // enroll a student
+        Route::post('/teacher/lessons/{id}/enroll/{student}', [EpisodeController::class, 'enroll']);
+        Route::get("/teacher/enroll/{id}",[EnrollController::class, 'index']);
+        Route::delete("/teacher/enroll/{id}",[EnrollController::class, 'destroy']);
+
     });
 });
 

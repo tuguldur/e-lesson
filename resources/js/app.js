@@ -18,6 +18,7 @@ import {
     Users,
     Lesson,
     Episode,
+    Home,
 } from "./pages";
 // context
 import { Global } from "./context/global";
@@ -41,13 +42,7 @@ const App = (props) => {
                 >
                     <Header />
                     <Switch>
-                        <Route
-                            exact
-                            path="/"
-                            component={() => (
-                                <div className="home">Hello world</div>
-                            )}
-                        />
+                        <Route exact path="/" component={Home} />
                         <Route exact path="/auth/login" component={Auth} />
                         <Route exact path="/auth/signup" component={Signup} />
                         <Route exact path="/auth/forgot" component={Forgot} />

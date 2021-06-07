@@ -13,9 +13,15 @@ class EnrollController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        $enrolls = Enroll::where("lesson_id",$id)->get();
+        $data = array();
+        foreach ($enrolls as $enroll) {
+            $enroll->student;
+            $data[] = $enroll;
+        }
+        return response()->json(['status' => true, 'data' => $data]);
     }
 
     /**
@@ -79,8 +85,9 @@ class EnrollController extends Controller
      * @param  \App\Models\Enroll  $enroll
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Enroll $enroll)
+    public function destroy($id)
     {
-        //
+        Enroll::find($id)->delete();
+        return response()->json(['status' => true ]);
     }
 }

@@ -15,6 +15,8 @@ class CreateEnrollsTable extends Migration
     {
         Schema::create('enrolls', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('lesson_id')->constrained('lessons');
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }

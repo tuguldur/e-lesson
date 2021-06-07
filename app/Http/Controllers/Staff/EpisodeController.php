@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Staff;
 use App\Http\Controllers\Controller;
 
 use App\Models\Episode;
+use App\Models\Enroll;
 use Illuminate\Http\Request;
 
 class EpisodeController extends Controller
@@ -53,7 +54,19 @@ class EpisodeController extends Controller
         $path = $request->file('video')->store('videos');
         return response()->json(['status' => true, 'path' => $path]);
     }
-
+    public function enroll($id, $student){
+        $found = Enroll::where('lesson_id',$id)->where("user_id",$student)->first();
+        if($found){
+            return response()->json(['status' => false ]);
+        }
+        else{
+            Enroll::create([
+                'user_id' => $student,
+                'lesson_id' => $id,
+            ]);
+            return response()->json(['status' => true ]);
+        }
+    }
     /**
      * Display the specified resource.
      *

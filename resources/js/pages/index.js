@@ -8,4 +8,6 @@ import Users from "./admin/users";
 
 import Lesson from "./teacher/lesson";
 import Episode from "./teacher/episode";
-export { Auth, Signup, Forgot, Reset, Settings, Users, Lesson, Episode };
+
+import Home from "./index/index";
+export { Auth, Signup, Forgot, Reset, Settings, Users, Lesson, Episode, Home };

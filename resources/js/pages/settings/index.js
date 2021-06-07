@@ -105,7 +105,12 @@ const Settings = () => {
                                     setFileValue(info, "avatar")
                                 }
                             >
-                                <Button>Зураг солих</Button>
+                                <Button>
+                                    Зураг{" "}
+                                    {data.props.auth.user.avatar
+                                        ? "солих"
+                                        : "нэмэх"}
+                                </Button>
                             </Upload>
                         </ImgCrop>
                     </Space>
