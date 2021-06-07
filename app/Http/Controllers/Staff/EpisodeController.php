@@ -13,9 +13,10 @@ class EpisodeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        //
+        $episode = Episode::where("lesson_id",$id)->get();
+        return response()->json(['status' => true, 'data' => $episode ]);
     }
 
     /**
@@ -23,9 +24,19 @@ class EpisodeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:100',
+            'video' => 'required|string',
+            'id' => 'required|string',
+        ]);
+        Episode::create([
+            'name' => $request->name,
+            'video' => $request->video,
+            'lesson_id' => $request->id,
+        ]);
+        return response()->json(['status' => true]);
     }
 
     /**
@@ -37,7 +48,7 @@ class EpisodeController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'video' => 'required|video|mimes:video/mp4'
+            'video' => 'required|file|mimes:mp4'
         ]);
         $path = $request->file('video')->store('videos');
         return response()->json(['status' => true, 'path' => $path]);
@@ -72,9 +83,17 @@ class EpisodeController extends Controller
      * @param  \App\Models\Episode  $episode
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Episode $episode)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:100',
+            'video' => 'required|string'
+        ]);
+        $episode = Episode::find($id);
+        $episode->name = $request->name;
+        $episode->video = $request->video;
+        $episode->save();
+        return response()->json(['status' => true ]);
     }
 
     /**
@@ -83,8 +102,9 @@ class EpisodeController extends Controller
      * @param  \App\Models\Episode  $episode
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Episode $episode)
+    public function destroy($id)
     {
-        //
+        Episode::find($id)->delete();
+        return response()->json(['status' => true ]);
     }
 }

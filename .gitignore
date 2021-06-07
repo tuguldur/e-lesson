@@ -2,6 +2,7 @@
 /public/hot
 /public/storage
 /public/avatars
+/public/videos
 /storage/*.key
 /vendor
 .env

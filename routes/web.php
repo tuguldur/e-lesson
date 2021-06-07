@@ -39,6 +39,10 @@ Route::middleware(['auth'])->group(function () {
         Route::delete("/teacher/lessons/{id}",[LessonController::class, 'destroy']);
         // lesson episodes
         Route::post('/teacher/episode/video', [EpisodeController::class, 'store']);
+        Route::post('/teacher/episode/add', [EpisodeController::class, 'create']);
+        Route::post('/teacher/episode/{id}', [EpisodeController::class, 'update']);
+        Route::get('/teacher/episode/{id}', [EpisodeController::class, 'index']);
+        Route::delete("/teacher/episode/{id}",  [EpisodeController::class, 'destroy']);
     });
 });
 
