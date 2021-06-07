@@ -13,9 +13,9 @@ class EnrollController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index()
     {
-        $enrolls = Enroll::where("lesson_id",$id)->get();
+        $enrolls = Enroll::get();
         $data = array();
         foreach ($enrolls as $enroll) {
             $enroll->student;
@@ -51,9 +51,15 @@ class EnrollController extends Controller
      * @param  \App\Models\Enroll  $enroll
      * @return \Illuminate\Http\Response
      */
-    public function show(Enroll $enroll)
+    public function show($id)
     {
-        //
+        $enrolls = Enroll::where("lesson_id",$id)->get();
+        $data = array();
+        foreach ($enrolls as $enroll) {
+            $enroll->student;
+            $data[] = $enroll;
+        }
+        return response()->json(['status' => true, 'data' => $data]);
     }
 
     /**

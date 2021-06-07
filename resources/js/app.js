@@ -19,6 +19,7 @@ import {
     Lesson,
     Episode,
     Home,
+    View,
 } from "./pages";
 // context
 import { Global } from "./context/global";
@@ -66,6 +67,7 @@ const App = (props) => {
                             path="/teacher/lesson/:id"
                             component={Episode}
                         />
+                        <Protected exact path="/view/:id" component={View} />
                         <Redirect to="/" />
                     </Switch>
                 </Global.Provider>

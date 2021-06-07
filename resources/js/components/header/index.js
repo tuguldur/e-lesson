@@ -45,11 +45,6 @@ const Header = () => {
                                                     Хэрэглэгчид
                                                 </Link>
                                             </Menu.Item>
-                                            <Menu.Item key="/admin/report">
-                                                <Link to="/admin/report">
-                                                    Tайлан
-                                                </Link>
-                                            </Menu.Item>
                                             <Menu.Item key="/admin/lesson">
                                                 <Link to="/teacher/lesson">
                                                     Хичээлүүд

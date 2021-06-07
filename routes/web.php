@@ -33,7 +33,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post("/admin/users/{id}",[Users::class, 'update']);
     });
     Route::get("/lessons",[LessonController::class, 'list']);
-    
+    // student browse
+    Route::get("/lessons/{id}",[LessonController::class, 'view']);
     Route::middleware(['role:admin,teacher'])->group(function () {
         Route::get("/teacher/users",[LessonController::class, 'users']);
         Route::get("/teacher/lessons",[LessonController::class, 'index']);
@@ -51,9 +52,9 @@ Route::middleware(['auth'])->group(function () {
         Route::delete("/teacher/episode/{id}",  [EpisodeController::class, 'destroy']);
         // enroll a student
         Route::post('/teacher/lessons/{id}/enroll/{student}', [EpisodeController::class, 'enroll']);
-        Route::get("/teacher/enroll/{id}",[EnrollController::class, 'index']);
+        Route::get("/teacher/enroll/{id}",[EnrollController::class, 'show']);
         Route::delete("/teacher/enroll/{id}",[EnrollController::class, 'destroy']);
-
+        Route::get("/teacher/enroll",[EnrollController::class, 'index']);
     });
 });
 

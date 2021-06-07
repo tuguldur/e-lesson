@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, message, Card, Empty } from "antd";
+import { Row, Col, Button, Card, Empty } from "antd";
 import { Link } from "react-router-dom";
 import axios from "axios";
 const Home = () => {
@@ -13,7 +13,7 @@ const Home = () => {
                     setState(response.data.data);
                 }
             })
-            .catch(() => message.error("Алдаа гарлаа"));
+            .catch(() => {});
     };
     useEffect(() => get(), []);
     return (
@@ -42,7 +42,17 @@ const Home = () => {
                     ))
                 ) : (
                     <Col span={24}>
-                        <Empty />
+                        <Empty
+                            description={
+                                <span>
+                                    <Button type="primary">
+                                        <Link to="/auth/signup">
+                                            Бүртгэл үүсгэх
+                                        </Link>
+                                    </Button>
+                                </span>
+                            }
+                        />
                     </Col>
                 )}
             </Row>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Staff;
 use App\Http\Controllers\Controller;
 
 use App\Models\Lesson;
+use App\Models\Episode;
 use App\Models\Enroll;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -38,6 +39,26 @@ class LessonController extends Controller
                 $data[] = $lesson;
             }
             return response()->json(['status' => true, 'data' => $data]);
+    }
+    public function view($id)
+    {   
+        $lesson = Lesson::find($id);
+        $enroll = Enroll::where("user_id", Auth::id())->where("lesson_id", $id)->first();
+        if($lesson){
+            $lesson->owner;
+            $episode = Episode::where("lesson_id",$id)->get();
+            if(Auth::user()->role == 'admin'){
+                return response()->json(['status' => true ,"data" => $lesson, "episode" => $episode]);
+            }
+            else if($lesson->owner->id == Auth::id()){
+                return response()->json(['status' => true ,"data" => $lesson, "episode" => $episode]);
+            }
+            else if($enroll){
+                return response()->json(['status' => true ,"data" => $lesson, "episode" => $episode ,'enroll' => $enroll]);
+            }
+            else return response()->json(['status' => false ], 403);
+        }
+        else return response()->json(['status' => false ], 404);
     }
     /**
      * Show the form for creating a new resource.
@@ -131,8 +152,12 @@ class LessonController extends Controller
             'name' => 'required|string|max:32',
             'description' => 'required|string|max:255',
         ]);
-
-        $lesson = Lesson::where("id",$id)->where("created_by", Auth::id())->first();
+        if(Auth::user()->role =='admin'){
+            $lesson = Lesson::where("id",$id)->first();
+        }
+        else{
+            $lesson = Lesson::where("id",$id)->where("created_by", Auth::id())->first();
+        }
         $lesson->name = $request->name;
         $lesson->description = $request->description;
         $lesson->save();

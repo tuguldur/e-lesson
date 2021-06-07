@@ -92,6 +92,7 @@ const Episode = (props) => {
                     "Tа энэ хэсэгт хандах эрхгүй эсвэл хичээл олдсонгүй"
                 )
             );
+        get_student();
     };
     const history = useHistory();
     useEffect(() => get(), []);
@@ -114,9 +115,6 @@ const Episode = (props) => {
                                             key="student"
                                             onClick={() => {
                                                 setModalStudent(true);
-                                                if (!student) {
-                                                    get_student();
-                                                }
                                                 if (!users) {
                                                     axios
                                                         .get("/teacher/users")
@@ -199,7 +197,7 @@ const Episode = (props) => {
                                             {episode?.length}
                                         </Descriptions.Item>
                                         <Descriptions.Item label="Нийт сурагч">
-                                            {1}
+                                            {student?.length}
                                         </Descriptions.Item>
                                     </Descriptions>
                                 </PageHeader>

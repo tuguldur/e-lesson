@@ -10,4 +10,16 @@ import Lesson from "./teacher/lesson";
 import Episode from "./teacher/episode";
 
 import Home from "./index/index";
-export { Auth, Signup, Forgot, Reset, Settings, Users, Lesson, Episode, Home };
+import View from "./view";
+export {
+    Auth,
+    Signup,
+    Forgot,
+    Reset,
+    Settings,
+    Users,
+    Lesson,
+    Episode,
+    Home,
+    View,
+};
