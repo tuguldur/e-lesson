@@ -64,9 +64,15 @@ class LessonController extends Controller
      * @param  \App\Models\Lesson  $lesson
      * @return \Illuminate\Http\Response
      */
-    public function show(Lesson $lesson)
+    public function show($id)
     {
-        //
+        $lesson = Lesson::where("id",$id)->where("created_by", Auth::id())->first();
+        if($lesson){
+            $lesson->owner;
+            return response()->json(['status' => true, "data" => $lesson ]);
+        }
+        else return response()->json(['status' => false ], 404);
+
     }
 
     /**
@@ -77,7 +83,7 @@ class LessonController extends Controller
      */
     public function edit(Lesson $lesson)
     {
-        //
+        return response()->json(['status' => true ]);
     }
 
     /**

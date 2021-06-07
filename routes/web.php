@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\User\Account;
 use App\Http\Controllers\Staff\Users;
 use App\Http\Controllers\Staff\LessonController;
+use App\Http\Controllers\Staff\EpisodeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,8 +34,11 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:admin,teacher'])->group(function () {
         Route::get("/teacher/lessons",[LessonController::class, 'index']);
         Route::post("/teacher/lessons/add",[LessonController::class, 'create']);
+        Route::get("/teacher/lessons/{id}",[LessonController::class, 'show']);
         Route::post("/teacher/lessons/{id}",[LessonController::class, 'update']);
         Route::delete("/teacher/lessons/{id}",[LessonController::class, 'destroy']);
+        // lesson episodes
+        Route::post('/teacher/episode/video', [EpisodeController::class, 'store']);
     });
 });
 
